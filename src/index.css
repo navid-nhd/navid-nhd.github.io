@@ -22,7 +22,6 @@
     background-color: var(--bg-light);
     color: #18181b;
     transition: background-color 0.3s, color 0.3s;
-    cursor: none;
   }
 
   .dark body {
@@ -34,6 +33,11 @@
     background: #14b8a644;
     color: #14b8a6;
   }
+}
+
+/* Hide the native cursor only on real pointer devices (custom cursor active) */
+@media (pointer: fine) {
+  body { cursor: none; }
 }
 
 /* ── Custom cursor ─────────────────────────────────── */

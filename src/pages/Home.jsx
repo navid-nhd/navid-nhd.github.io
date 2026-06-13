@@ -133,7 +133,7 @@ export default function Home({ dark }) {
               </Link>
               <a
                 href="/cv.pdf"
-                download
+                download="Navid-Nahardani-Resume.pdf"
                 className={`flex items-center gap-2 px-6 py-3.5 rounded-2xl font-medium
                             border transition-all hover:scale-105
                             ${dark ? 'border-white/10 bg-white/5 text-white hover:bg-white/10'

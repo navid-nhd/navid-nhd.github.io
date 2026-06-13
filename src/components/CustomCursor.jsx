@@ -1,11 +1,16 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 
 export default function CustomCursor() {
   const dot  = useRef(null)
   const ring = useRef(null)
+  // Touch devices have no real pointer — the custom cursor would just sit
+  // stuck in the top-left corner, so we disable it entirely there.
+  const isMobile = useMemo(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches,
+    []
+  )
 
   useEffect(() => {
-    const isMobile = window.matchMedia('(pointer: coarse)').matches
     if (isMobile) return
 
     let mx = -100, my = -100
@@ -42,7 +47,9 @@ export default function CustomCursor() {
       cancelAnimationFrame(raf)
       document.removeEventListener('mousemove', onMove)
     }
-  }, [])
+  }, [isMobile])
+
+  if (isMobile) return null
 
   return (
     <>

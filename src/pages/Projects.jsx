@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useReveal } from '../hooks/useReveal.js'
 import { ExternalLink, Github, Eye, X, ChevronLeft, ChevronRight, Play } from 'lucide-react'
 
@@ -248,8 +249,8 @@ function ProjectCard({ p, dark, onClick }) {
 
 function Modal({ p, dark, onClose, onPrev, onNext }) {
   if (!p) return null
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+  return createPortal(
+    <div className="fixed inset-0 z-[9996] flex items-center justify-center p-4 sm:p-6"
          onClick={onClose}>
       <div className="absolute inset-0 bg-black/75 backdrop-blur-md" />
       <div
@@ -325,7 +326,8 @@ function Modal({ p, dark, onClose, onPrev, onNext }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 
