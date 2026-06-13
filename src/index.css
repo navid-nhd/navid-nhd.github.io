@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand: #14b8a6;
+    --accent: #f97316;
+    --bg-light: #f8fafb;
+    --bg-dark: #080c10;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  body {
+    @apply font-body antialiased;
+    background-color: var(--bg-light);
+    color: #18181b;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: none;
+  }
+
+  .dark body {
+    background-color: var(--bg-dark);
+    color: #e4e4e7;
+  }
+
+  ::selection {
+    background: #14b8a644;
+    color: #14b8a6;
+  }
+}
+
+/* ── Custom cursor ─────────────────────────────────── */
+.cursor-dot {
+  width: 8px; height: 8px;
+  background: #14b8a6;
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid #14b8a688;
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.12s ease, width 0.2s, height 0.2s, border-color 0.2s;
+}
+.cursor-ring.hovered {
+  width: 56px; height: 56px;
+  border-color: #14b8a6;
+}
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #14b8a655;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
+
+/* ── Noise texture overlay ──────────────────────────── */
+.noise::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.5;
+}
+
+/* ── Gradient text ─────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #14b8a6, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-warm {
+  background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glassmorphism ─────────────────────────────────── */
+.glass {
+  backdrop-filter: blur(16px) saturate(1.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.glass-light {
+  backdrop-filter: blur(16px) saturate(1.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* ── Glow effects ─────────────────────────────────── */
+.glow-brand { box-shadow: 0 0 30px #14b8a633; }
+.glow-brand:hover { box-shadow: 0 0 50px #14b8a655; }
+
+/* ── Magnetic button ──────────────────────────────── */
+.magnetic { transition: transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+
+/* ── Section reveal ──────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Skill bar ──────────────────────────────────── */
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #14b8a6, #06b6d4);
+  border-radius: 99px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+
+/* ── Card hover ─────────────────────────────────── */
+.project-card {
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease;
+}
+.project-card:hover {
+  transform: translateY(-8px) scale(1.01);
+}
+
+/* ── Marquee ─────────────────────────────────────── */
+.marquee-inner {
+  display: flex;
+  gap: 3rem;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+
+/* ── Timeline ──────────────────────────────────── */
+.timeline-line {
+  position: absolute;
+  left: 20px;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #14b8a6, #06b6d433);
+}
+.timeline-dot {
+  width: 12px; height: 12px;
+  background: #14b8a6;
+  border-radius: 50%;
+  border: 2px solid var(--bg-dark, #fff);
+  box-shadow: 0 0 0 4px #14b8a622;
+}
+
+/* ── Mobile nav ─────────────────────────────────── */
+.mobile-nav {
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.mobile-nav.open { transform: translateX(0); }
+
+/* ── Hero mesh gradient ─────────────────────────── */
+.mesh-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%, #14b8a622, transparent),
+    radial-gradient(ellipse 60% 80% at 80% 60%, #06b6d415, transparent),
+    radial-gradient(ellipse 40% 40% at 50% 80%, #f9731611, transparent);
+}
+
+/* ── Rotating border ─────────────────────────────── */
+@keyframes rotateBorder {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.rotate-border {
+  animation: rotateBorder 8s linear infinite;
+}
+
+/* ── Marquee keyframe ────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Loading bar ─────────────────────────────────── */
+@keyframes loadingBar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
