@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Download, Sparkles, Star, Zap, Globe, Code, Layers, ChevronDown } from 'lucide-react'
 import { useReveal } from '../hooks/useReveal.js'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 const techStack = [
   'React.js','Vue.js','Nuxt.js','TypeScript','Tailwind CSS','Next.js',
@@ -10,11 +11,23 @@ const techStack = [
   'Vite','Pinia','Redux','SCSS','Framer Motion','GraphQL',
 ]
 
-const stats = [
-  { value: '5+',  label: 'Years Experience', icon: Star },
-  { value: '30+', label: 'Projects Delivered', icon: Layers },
-  { value: '15+', label: 'Happy Clients', icon: Sparkles },
-  { value: '99%', label: 'Client Satisfaction', icon: Zap },
+const statIcons = [Star, Layers, Sparkles, Zap]
+
+const featured = [
+  {
+    title: 'Alef Ba Tour',
+    url: 'https://www.alefbatour.com',
+    tags: ['Nuxt.js', 'Vue.js', 'SSR'],
+    color: 'from-brand-500 to-cyan-500',
+    img: '/images/projects/alefbatour.webp',
+  },
+  {
+    title: 'Trip.ir',
+    url: 'https://www.trip.ir',
+    tags: ['Vue.js', '.NET Core MVC', 'MPA'],
+    color: 'from-blue-500 to-indigo-600',
+    img: '/images/projects/trip-8886.webp',
+  },
 ]
 
 function TypeWriter({ words }) {
@@ -23,8 +36,11 @@ function TypeWriter({ words }) {
   const [phase, setPhase] = useState('type')
   const [cIdx, setCIdx]   = useState(0)
 
+  // Reset when the word list (language) changes
+  useEffect(() => { setText(''); setWIdx(0); setPhase('type'); setCIdx(0) }, [words])
+
   useEffect(() => {
-    const word = words[wIdx]
+    const word = words[wIdx] ?? ''
     if (phase === 'type') {
       if (cIdx < word.length) {
         const t = setTimeout(() => { setText(word.slice(0, cIdx+1)); setCIdx(c=>c+1) }, 80)
@@ -69,6 +85,7 @@ function FloatingBadge({ children, className }) {
 export default function Home({ dark }) {
   const s1 = useReveal()
   const s2 = useReveal()
+  const { t } = useLang()
 
   return (
     <main className="pt-24">
@@ -91,34 +108,34 @@ export default function Home({ dark }) {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-24 grid md:grid-cols-2 gap-16 items-center">
 
           {/* Left content */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 min-w-0">
             {/* Badge */}
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium
                              border w-fit
                              ${dark ? 'border-brand-500/30 bg-brand-500/10 text-brand-400'
                                     : 'border-brand-500/20 bg-brand-50 text-brand-600'}`}>
               <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
-              Available for freelance work
+              {t.home.available}
             </div>
 
             {/* Headline */}
             <div>
               <h1 className={`font-display font-bold text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-3
                               ${dark ? 'text-white' : 'text-zinc-900'}`}>
-                Hi, I'm<br />
-                <span className={dark ? 'text-zinc-100' : 'text-zinc-900'}>Navid</span>
+                {t.home.hi}<br />
+                <span className={dark ? 'text-zinc-100' : 'text-zinc-900'}>{t.home.name}</span>
               </h1>
-              <div className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight min-h-[3rem] sm:min-h-[3.75rem] lg:min-h-[4.5rem]">
-                <TypeWriter words={['Frontend Dev', 'UI Craftsman', 'React Expert', 'Vue Specialist']} />
+              <div className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight whitespace-nowrap min-h-[3rem] sm:min-h-[3.75rem] lg:min-h-[4.5rem]">
+                <TypeWriter words={t.home.roles} />
               </div>
             </div>
 
             {/* Description */}
             <p className={`text-lg leading-relaxed max-w-md font-body
                            ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-              Crafting pixel-perfect, blazing-fast web experiences with
-              <span className="text-brand-400 font-medium"> 5 years</span> of passion for frontend excellence.
-              Based in <span className="text-brand-400 font-medium">Tehran, Iran</span>.
+              {t.home.descA}
+              <span className="text-brand-400 font-medium"> {t.home.descYears} </span>
+              {t.home.descB} <span className="text-brand-400 font-medium">{t.home.descLocation}</span>.
             </p>
 
             {/* CTA */}
@@ -129,7 +146,7 @@ export default function Home({ dark }) {
                            font-medium shadow-lg shadow-brand-500/30 hover:bg-brand-400
                            hover:shadow-brand-500/50 hover:scale-105 transition-all"
               >
-                View Projects <ArrowRight size={16} />
+                {t.home.viewProjects} <ArrowRight size={16} className="rtl:rotate-180" />
               </Link>
               <a
                 href="/cv.pdf"
@@ -139,13 +156,13 @@ export default function Home({ dark }) {
                             ${dark ? 'border-white/10 bg-white/5 text-white hover:bg-white/10'
                                    : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 shadow-sm'}`}
               >
-                <Download size={16} /> Download CV
+                <Download size={16} /> {t.home.downloadCv}
               </a>
             </div>
 
             {/* Social proof */}
             <div className="flex items-center gap-4 pt-2">
-              <div className="flex -space-x-2">
+              <div className="flex -space-x-2 rtl:space-x-reverse">
                 {['🧑‍💻','👩‍💼','🧑‍🎨','👨‍💼'].map((e,i)=>(
                   <div key={i} className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm
                                            ${dark ? 'border-[#080c10] bg-zinc-800' : 'border-white bg-zinc-100'}`}>
@@ -154,7 +171,7 @@ export default function Home({ dark }) {
                 ))}
               </div>
               <p className={`text-sm ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-                <span className="font-semibold text-brand-400">15+</span> satisfied clients
+                <span className="font-semibold text-brand-400">{t.home.satisfiedA}</span> {t.home.satisfiedB}
               </p>
             </div>
           </div>
@@ -180,17 +197,17 @@ export default function Home({ dark }) {
             {/* Floating badges */}
             <FloatingBadge className={`-top-4 -right-4 ${dark ? 'text-white' : 'text-zinc-800'}`}>
               <Code size={14} className="text-brand-400" />
-              React & Vue Expert
+              {t.home.badgeExpert}
             </FloatingBadge>
 
             <FloatingBadge className={`bottom-8 -left-8 ${dark ? 'text-white' : 'text-zinc-800'}`}>
               <Globe size={14} className="text-blue-400" />
-              Tehran, Iran
+              {t.home.badgeLocation}
             </FloatingBadge>
 
             <FloatingBadge className={`top-1/2 -right-8 ${dark ? 'text-white' : 'text-zinc-800'}`}>
               <Zap size={14} className="text-yellow-400" />
-              5 Years Exp.
+              {t.home.badgeYears}
             </FloatingBadge>
           </div>
         </div>
@@ -199,7 +216,7 @@ export default function Home({ dark }) {
         <a href="#stats"
            className={`absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1
                         text-xs ${dark ? 'text-zinc-500' : 'text-zinc-400'} animate-bounce`}>
-          <span>scroll</span>
+          <span>{t.home.scroll}</span>
           <ChevronDown size={14} />
         </a>
       </section>
@@ -208,25 +225,28 @@ export default function Home({ dark }) {
       <section id="stats" className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div ref={s1} className="reveal grid grid-cols-2 md:grid-cols-4 gap-4">
-            {stats.map(({ value, label, icon: Icon }, i) => (
-              <div
-                key={i}
-                className={`relative group rounded-3xl p-6 text-center transition-all duration-300
-                             hover:-translate-y-1 overflow-hidden
-                             ${dark ? 'bg-white/3 border border-white/5 hover:border-brand-500/20'
-                                    : 'bg-white border border-zinc-100 shadow-sm hover:shadow-md'}`}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent
-                                opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative">
-                  <div className="w-10 h-10 rounded-2xl bg-brand-500/10 flex items-center justify-center mx-auto mb-3">
-                    <Icon size={18} className="text-brand-400" />
+            {t.home.stats.map(({ value, label }, i) => {
+              const Icon = statIcons[i]
+              return (
+                <div
+                  key={i}
+                  className={`relative group rounded-3xl p-6 text-center transition-all duration-300
+                               hover:-translate-y-1 overflow-hidden
+                               ${dark ? 'bg-white/3 border border-white/5 hover:border-brand-500/20'
+                                      : 'bg-white border border-zinc-100 shadow-sm hover:shadow-md'}`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent
+                                  opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-2xl bg-brand-500/10 flex items-center justify-center mx-auto mb-3">
+                      <Icon size={18} className="text-brand-400" />
+                    </div>
+                    <p className={`font-display font-bold text-3xl mb-1 ${dark ? 'text-white' : 'text-zinc-900'}`}>{value}</p>
+                    <p className={`text-sm ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>{label}</p>
                   </div>
-                  <p className={`font-display font-bold text-3xl mb-1 ${dark ? 'text-white' : 'text-zinc-900'}`}>{value}</p>
-                  <p className={`text-sm ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>{label}</p>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
@@ -253,38 +273,21 @@ export default function Home({ dark }) {
           <div ref={s2} className="reveal">
             <div className="flex items-end justify-between mb-12">
               <div>
-                <p className="text-brand-400 font-mono text-sm mb-2">// selected work</p>
+                <p className="text-brand-400 font-mono text-sm mb-2">{t.home.selectedWork}</p>
                 <h2 className={`font-display font-bold text-4xl ${dark ? 'text-white' : 'text-zinc-900'}`}>
-                  Featured Projects
+                  {t.home.featured}
                 </h2>
               </div>
               <Link
                 to="/projects"
                 className="hidden sm:flex items-center gap-2 text-sm text-brand-400 hover:text-brand-300 font-medium transition-colors"
               >
-                View all <ArrowRight size={14} />
+                {t.home.viewAll} <ArrowRight size={14} className="rtl:rotate-180" />
               </Link>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: 'Alef Ba Tour',
-                  url: 'https://www.alefbatour.com',
-                  tags: ['Nuxt.js', 'Vue.js', 'SSR'],
-                  desc: 'Full travel booking platform with Nuxt.js SSR — flights, hotels, tours and reservations. Multi-year active collaboration.',
-                  color: 'from-brand-500 to-cyan-500',
-                  img: '/images/projects/alefbatour.webp',
-                },
-                {
-                  title: 'Trip.ir',
-                  url: 'https://www.trip.ir',
-                  tags: ['Vue.js', '.NET Core MVC', 'MPA'],
-                  desc: "One of Iran's largest travel aggregators — complex multi-page Vue.js app with flight, hotel and tour booking.",
-                  color: 'from-blue-500 to-indigo-600',
-                  img: '/images/projects/trip-8886.webp',
-                },
-              ].map((p, i) => (
+              {featured.map((p, i) => (
                 <a
                   key={i}
                   href={p.url}
@@ -296,7 +299,7 @@ export default function Home({ dark }) {
                 >
                   <div className={`h-64 bg-gradient-to-br ${p.color} relative overflow-hidden`}>
                     <div className="absolute inset-2 rounded-xl overflow-hidden flex flex-col">
-                      <div className="flex items-center gap-1.5 px-3 py-2 bg-black/40 flex-shrink-0">
+                      <div className="flex items-center gap-1.5 px-3 py-2 bg-black/40 flex-shrink-0" dir="ltr">
                         <div className="w-2 h-2 rounded-full bg-red-400" />
                         <div className="w-2 h-2 rounded-full bg-yellow-400" />
                         <div className="w-2 h-2 rounded-full bg-green-400" />
@@ -308,17 +311,17 @@ export default function Home({ dark }) {
                   </div>
                   <div className="p-6">
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {p.tags.map(t => (
-                        <span key={t} className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium
+                      {p.tags.map(t2 => (
+                        <span key={t2} className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium
                                                   ${dark ? 'bg-white/5 text-zinc-400' : 'bg-zinc-100 text-zinc-500'}`}>
-                          {t}
+                          {t2}
                         </span>
                       ))}
                     </div>
                     <h3 className={`font-display font-bold text-xl mb-2 ${dark ? 'text-white' : 'text-zinc-900'}`}>{p.title}</h3>
-                    <p className={`text-sm leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>{p.desc}</p>
+                    <p className={`text-sm leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.home.featuredItems[i].desc}</p>
                     <div className="mt-4 flex items-center gap-1 text-brand-400 text-sm font-medium">
-                      Visit live site <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      {t.home.visitLive} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform rtl:rotate-180" />
                     </div>
                   </div>
                 </a>

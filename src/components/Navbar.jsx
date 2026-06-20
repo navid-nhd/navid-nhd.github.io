@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { Sun, Moon, Menu, X, Code2 } from 'lucide-react'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 const links = [
-  { to: '/',         label: 'Home'     },
-  { to: '/about',    label: 'About'    },
-  { to: '/projects', label: 'Projects' },
-  { to: '/career',   label: 'Career'   },
-  { to: '/contact',  label: 'Contact'  },
+  { to: '/',         key: 'home'     },
+  { to: '/about',    key: 'about'    },
+  { to: '/projects', key: 'projects' },
+  { to: '/career',   key: 'career'   },
+  { to: '/contact',  key: 'contact'  },
 ]
 
 export default function Navbar({ dark, setDark }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen]         = useState(false)
   const location = useLocation()
+  const { t, lang, setLang } = useLang()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -47,7 +49,7 @@ export default function Navbar({ dark, setDark }) {
 
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-1">
-            {links.map(({ to, label }) => (
+            {links.map(({ to, key }) => (
               <li key={to}>
                 <NavLink
                   to={to}
@@ -61,7 +63,7 @@ export default function Navbar({ dark, setDark }) {
                 >
                   {({ isActive }) => (
                     <>
-                      {label}
+                      {t.nav[key]}
                       {isActive && (
                         <span className="absolute inset-x-2 -bottom-1 h-0.5 bg-brand-400 rounded-full" />
                       )}
@@ -74,6 +76,24 @@ export default function Navbar({ dark, setDark }) {
 
           {/* Right controls */}
           <div className="flex items-center gap-2">
+            {/* Language toggle (segmented) */}
+            <div className={`flex items-center h-9 rounded-full p-0.5 text-xs font-bold ${dark ? 'bg-white/10' : 'bg-zinc-100'}`}>
+              {['en', 'fa'].map((lng) => (
+                <button
+                  key={lng}
+                  onClick={() => setLang(lng)}
+                  aria-label={lng === 'en' ? 'English' : 'فارسی'}
+                  className={`h-8 px-3 rounded-full transition-all
+                             ${lang === lng
+                               ? 'bg-brand-500 text-white shadow-sm'
+                               : dark ? 'text-zinc-400 hover:text-white' : 'text-zinc-500 hover:text-zinc-800'}`}
+                >
+                  {lng === 'en' ? 'EN' : 'فا'}
+                </button>
+              ))}
+            </div>
+
+            {/* Theme toggle */}
             <button
               onClick={() => setDark(!dark)}
               className={`w-9 h-9 rounded-full flex items-center justify-center transition-all
@@ -90,7 +110,7 @@ export default function Navbar({ dark, setDark }) {
                          text-white text-sm font-medium shadow-lg shadow-brand-500/25
                          hover:bg-brand-400 transition-all hover:scale-105 hover:shadow-brand-500/40"
             >
-              Hire Me
+              {t.nav.hire}
             </NavLink>
 
             {/* Mobile menu */}
@@ -106,11 +126,11 @@ export default function Navbar({ dark, setDark }) {
       </header>
 
       {/* Mobile nav drawer */}
-      <div className={`mobile-nav ${open ? 'open' : ''} fixed inset-y-0 right-0 w-72 z-40
+      <div className={`mobile-nav ${open ? 'open' : ''} fixed inset-y-0 ltr:right-0 rtl:left-0 w-72 z-40
                        ${dark ? 'bg-[#0d1117]' : 'bg-white'}
                        shadow-2xl flex flex-col pt-24 pb-8 px-6`}>
         <ul className="flex flex-col gap-1">
-          {links.map(({ to, label }) => (
+          {links.map(({ to, key }) => (
             <li key={to}>
               <NavLink
                 to={to}
@@ -122,7 +142,7 @@ export default function Navbar({ dark, setDark }) {
                    }`
                 }
               >
-                {label}
+                {t.nav[key]}
               </NavLink>
             </li>
           ))}
@@ -135,7 +155,7 @@ export default function Navbar({ dark, setDark }) {
                        bg-brand-500 text-white font-medium shadow-lg shadow-brand-500/25
                        hover:bg-brand-400 transition-all"
           >
-            Hire Me
+            {t.nav.hire}
           </NavLink>
         </div>
       </div>

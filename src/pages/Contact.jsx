@@ -1,32 +1,34 @@
 import React, { useState } from 'react'
 import { useReveal } from '../hooks/useReveal.js'
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, MessageSquare, Clock, CheckCircle, AlertCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, Github, Linkedin, MessageSquare, Clock, CheckCircle } from 'lucide-react'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 const socials = [
-  { icon: Github,   label: 'GitHub',   href: 'https://github.com/navid',    handle: '@navid-nahardani', color: 'hover:border-zinc-400' },
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/in/navid',handle: 'Navid Nahardani',  color: 'hover:border-blue-400'  },
-  { icon: Twitter,  label: 'Twitter',  href: 'https://twitter.com/navid',   handle: '@navid_dev',       color: 'hover:border-sky-400'   },
+  { icon: Github,   label: 'GitHub',   href: 'https://github.com/navid-nhd',                  handle: '@navid-nhd',      color: 'hover:border-zinc-400' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/navid-nahardani/',  handle: 'navid-nahardani', color: 'hover:border-blue-400'  },
 ]
 
-const services = [
-  { icon: '⚛️', title: 'React Development',  desc: 'SPAs, dashboards, component libraries' },
-  { icon: '💚', title: 'Vue / Nuxt',          desc: 'SSR apps, admin panels, landing pages' },
-  { icon: '🎨', title: 'UI Implementation',   desc: 'Pixel-perfect Figma to code conversion' },
-  { icon: '⚡', title: 'Performance Audits',  desc: 'Lighthouse optimisation & Core Web Vitals' },
+// icon + href matched by index to t.contact.info
+const infoMeta = [
+  { icon: Mail,   href: 'mailto:nahardaninavid1993@gmail.com' },
+  { icon: Phone,  href: 'tel:+989128066948' },
+  { icon: MapPin, href: null },
+  { icon: Clock,  href: null },
 ]
+const serviceIcons = ['⚛️', '💚', '🎨', '⚡']
 
 export default function Contact({ dark }) {
   const s1 = useReveal()
+  const { t } = useLang()
 
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
-  const [status, setStatus] = useState(null) // null | 'sending' | 'success' | 'error'
+  const [status, setStatus] = useState(null)
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('sending')
-    // Simulate API call
     await new Promise(r => setTimeout(r, 1800))
     setStatus('success')
     setForm({ name: '', email: '', subject: '', message: '' })
@@ -39,18 +41,17 @@ export default function Contact({ dark }) {
       : 'bg-zinc-50 border-zinc-200 text-zinc-800 placeholder-zinc-400 focus:border-brand-400 focus:bg-white focus:shadow-sm'}`
 
   return (
-    <main className="pt-28 pb-20">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-20">
+    <main className="pt-24 pb-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-16">
 
         {/* Header */}
         <div ref={s1} className="reveal text-center">
-          <p className="text-brand-400 font-mono text-sm mb-3">// get in touch</p>
+          <p className="text-brand-400 font-mono text-sm mb-3">{t.contact.label}</p>
           <h1 className={`font-display font-bold text-5xl mb-4 ${dark ? 'text-white' : 'text-zinc-900'}`}>
-            Let's <span className="text-gradient">Work Together</span>
+            {t.contact.titleA} <span className="text-gradient">{t.contact.titleB}</span>
           </h1>
           <p className={`text-lg max-w-xl mx-auto ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-            Have a project in mind? Looking for a frontend developer? Or just want to say hello?
-            I'd love to hear from you.
+            {t.contact.subtitle}
           </p>
         </div>
 
@@ -61,27 +62,26 @@ export default function Contact({ dark }) {
 
             {/* Contact details */}
             <div className={`rounded-3xl p-6 ${dark ? 'bg-white/3 border border-white/5' : 'bg-white border border-zinc-100 shadow-sm'}`}>
-              <h2 className={`font-display font-bold text-lg mb-5 ${dark ? 'text-white' : 'text-zinc-900'}`}>Contact Info</h2>
+              <h2 className={`font-display font-bold text-lg mb-5 ${dark ? 'text-white' : 'text-zinc-900'}`}>{t.contact.infoTitle}</h2>
               <ul className="space-y-4">
-                {[
-                  { icon: Mail,    label: 'Email',    value: 'navid.nahardani@gmail.com', href: 'mailto:navid.nahardani@gmail.com' },
-                  { icon: Phone,   label: 'Phone',    value: '+98 912 806 6948',           href: 'tel:+989128066948' },
-                  { icon: MapPin,  label: 'Location', value: 'Tehran, Iran',               href: null },
-                  { icon: Clock,   label: 'Timezone', value: 'IRST (UTC+3:30)',             href: null },
-                ].map(({ icon: Icon, label, value, href }) => (
-                  <li key={label} className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-brand-500/10 flex items-center justify-center flex-shrink-0">
-                      <Icon size={15} className="text-brand-400" />
-                    </div>
-                    <div>
-                      <p className={`text-[11px] ${dark ? 'text-zinc-600' : 'text-zinc-400'}`}>{label}</p>
-                      {href
-                        ? <a href={href} className={`text-sm font-medium hover:text-brand-400 transition-colors ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{value}</a>
-                        : <p className={`text-sm font-medium ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{value}</p>
-                      }
-                    </div>
-                  </li>
-                ))}
+                {t.contact.info.map(({ label, value }, i) => {
+                  const { icon: Icon, href } = infoMeta[i]
+                  const ltr = i === 0 || i === 1
+                  return (
+                    <li key={i} className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-brand-500/10 flex items-center justify-center flex-shrink-0">
+                        <Icon size={15} className="text-brand-400" />
+                      </div>
+                      <div>
+                        <p className={`text-[11px] ${dark ? 'text-zinc-600' : 'text-zinc-400'}`}>{label}</p>
+                        {href
+                          ? <a href={href} dir={ltr ? 'ltr' : undefined} className={`text-sm font-medium hover:text-brand-400 transition-colors ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{value}</a>
+                          : <p className={`text-sm font-medium ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{value}</p>
+                        }
+                      </div>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
 
@@ -89,17 +89,16 @@ export default function Contact({ dark }) {
             <div className={`rounded-3xl p-6 border ${dark ? 'border-brand-500/20 bg-brand-500/5' : 'border-brand-200 bg-brand-50'}`}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
-                <p className="text-brand-400 font-semibold text-sm">Available for Work</p>
+                <p className="text-brand-400 font-semibold text-sm">{t.contact.availTitle}</p>
               </div>
               <p className={`text-xs leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-                Currently open to freelance projects and full-time opportunities.
-                Typical response within <strong className="text-brand-400">24 hours</strong>.
+                {t.contact.availText}
               </p>
             </div>
 
             {/* Socials */}
             <div className={`rounded-3xl p-6 ${dark ? 'bg-white/3 border border-white/5' : 'bg-white border border-zinc-100 shadow-sm'}`}>
-              <h3 className={`font-display font-bold text-sm mb-4 ${dark ? 'text-zinc-300' : 'text-zinc-600'}`}>Find Me Online</h3>
+              <h3 className={`font-display font-bold text-sm mb-4 ${dark ? 'text-zinc-300' : 'text-zinc-600'}`}>{t.contact.onlineTitle}</h3>
               <div className="space-y-2">
                 {socials.map(({ icon: Icon, label, href, handle, color }) => (
                   <a
@@ -113,7 +112,7 @@ export default function Contact({ dark }) {
                     <Icon size={16} className={`${dark ? 'text-zinc-400' : 'text-zinc-500'}`} />
                     <div>
                       <p className={`text-xs font-semibold ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{label}</p>
-                      <p className={`text-[11px] ${dark ? 'text-zinc-600' : 'text-zinc-400'}`}>{handle}</p>
+                      <p className={`text-[11px] ${dark ? 'text-zinc-600' : 'text-zinc-400'}`} dir="ltr">{handle}</p>
                     </div>
                   </a>
                 ))}
@@ -122,11 +121,11 @@ export default function Contact({ dark }) {
 
             {/* Services */}
             <div className={`rounded-3xl p-6 ${dark ? 'bg-white/3 border border-white/5' : 'bg-white border border-zinc-100 shadow-sm'}`}>
-              <h3 className={`font-display font-bold text-sm mb-4 ${dark ? 'text-zinc-300' : 'text-zinc-600'}`}>Services I Offer</h3>
+              <h3 className={`font-display font-bold text-sm mb-4 ${dark ? 'text-zinc-300' : 'text-zinc-600'}`}>{t.contact.servicesTitle}</h3>
               <div className="space-y-3">
-                {services.map(({ icon, title, desc }) => (
+                {t.contact.services.map(({ title, desc }, i) => (
                   <div key={title} className="flex items-start gap-3">
-                    <span className="text-lg flex-shrink-0">{icon}</span>
+                    <span className="text-lg flex-shrink-0">{serviceIcons[i]}</span>
                     <div>
                       <p className={`text-xs font-semibold ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{title}</p>
                       <p className={`text-[11px] ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>{desc}</p>
@@ -144,53 +143,36 @@ export default function Contact({ dark }) {
                 <div className="w-9 h-9 rounded-xl bg-brand-500/10 flex items-center justify-center">
                   <MessageSquare size={17} className="text-brand-400" />
                 </div>
-                <h2 className={`font-display font-bold text-xl ${dark ? 'text-white' : 'text-zinc-900'}`}>Send a Message</h2>
+                <h2 className={`font-display font-bold text-xl ${dark ? 'text-white' : 'text-zinc-900'}`}>{t.contact.formTitle}</h2>
               </div>
 
               {status === 'success' && (
                 <div className="mb-6 p-4 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center gap-3">
                   <CheckCircle size={18} className="text-brand-400 flex-shrink-0" />
-                  <p className="text-sm text-brand-400 font-medium">Message sent successfully! I'll reply within 24 hours.</p>
+                  <p className="text-sm text-brand-400 font-medium">{t.contact.success}</p>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>Your Name *</label>
-                    <input
-                      name="name" required value={form.name} onChange={handleChange}
-                      placeholder="John Doe"
-                      className={inputCls}
-                    />
+                    <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.contact.formName}</label>
+                    <input name="name" required value={form.name} onChange={handleChange} placeholder={t.contact.namePh} className={inputCls} />
                   </div>
                   <div>
-                    <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>Email Address *</label>
-                    <input
-                      type="email" name="email" required value={form.email} onChange={handleChange}
-                      placeholder="john@example.com"
-                      className={inputCls}
-                    />
+                    <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.contact.formEmail}</label>
+                    <input type="email" name="email" required value={form.email} onChange={handleChange} placeholder={t.contact.emailPh} className={inputCls} dir="ltr" />
                   </div>
                 </div>
 
                 <div>
-                  <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>Subject *</label>
-                  <input
-                    name="subject" required value={form.subject} onChange={handleChange}
-                    placeholder="Project inquiry / Freelance work / Just saying hi"
-                    className={inputCls}
-                  />
+                  <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.contact.formSubject}</label>
+                  <input name="subject" required value={form.subject} onChange={handleChange} placeholder={t.contact.subjectPh} className={inputCls} />
                 </div>
 
                 <div>
-                  <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>Message *</label>
-                  <textarea
-                    name="message" required value={form.message} onChange={handleChange}
-                    placeholder="Tell me about your project, timeline, and budget..."
-                    rows={6}
-                    className={`${inputCls} resize-none`}
-                  />
+                  <label className={`block text-xs font-medium mb-1.5 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.contact.formMessage}</label>
+                  <textarea name="message" required value={form.message} onChange={handleChange} placeholder={t.contact.messagePh} rows={6} className={`${inputCls} resize-none`} />
                 </div>
 
                 <button
@@ -206,11 +188,11 @@ export default function Contact({ dark }) {
                   {status === 'sending' ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending...
+                      {t.contact.sending}
                     </>
                   ) : (
                     <>
-                      <Send size={16} /> Send Message
+                      <Send size={16} className="rtl:rotate-180" /> {t.contact.sendMsg}
                     </>
                   )}
                 </button>

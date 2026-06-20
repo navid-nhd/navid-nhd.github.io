@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useReveal } from '../hooks/useReveal.js'
-import { MapPin, Phone, Calendar, Coffee, Code2, Palette, Zap, Star, Heart } from 'lucide-react'
+import { MapPin, Phone, Coffee, Code2, Palette, Star, Heart } from 'lucide-react'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 const skills = [
   { name: 'React.js',      pct: 95, cat: 'Framework'  },
@@ -19,15 +20,12 @@ const skills = [
 
 const tools = [
   '⚡ VS Code','🎨 Figma','🐙 GitHub','📦 npm / pnpm','🔧 Postman',
-  '🐳 Docker basics','🌐 Vercel','☁️ Netlify','📊 Storybook','🎯 Jira',
+  '🐳 Docker','🌐 GitHub Pages','📊 Storybook','🧩 wagmi / viem',
 ]
 
-const interests = [
-  { icon: Code2,   label: 'Open Source',      desc: 'Contributing to projects'  },
-  { icon: Palette, label: 'UI Design',         desc: 'Creating beautiful interfaces' },
-  { icon: Coffee,  label: 'Coffee & Code',     desc: 'Fueling late-night sessions' },
-  { icon: Heart,   label: 'Frontend Community', desc: 'Sharing knowledge & learning' },
-]
+// matched by index to t.about.details and t.about.interests
+const detailIcons = ['👤', '💼', '📅', MapPin, Phone, Star, '🎓', Coffee]
+const interestIcons = [Code2, Palette, Coffee, Heart]
 
 function OrbitingSphere() {
   const cx = 140, cy = 140
@@ -41,7 +39,6 @@ function OrbitingSphere() {
     <>
       <style>{`
         @keyframes cwv-glow{0%,100%{box-shadow:0 0 32px #14b8a680,0 0 64px #14b8a640}50%{box-shadow:0 0 52px #14b8a6b0,0 0 104px #14b8a665}}
-        @keyframes cwv-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
       `}</style>
       <div style={{ position:'relative', width:280, height:280, flexShrink:0 }}>
         <svg width="280" height="280" style={{ position:'absolute', inset:0, overflow:'visible' }}>
@@ -63,10 +60,7 @@ function OrbitingSphere() {
             </g>
           ))}
         </svg>
-        {/* Central sphere */}
-        <div style={{
-          position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', zIndex:20,
-        }}>
+        <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', zIndex:20 }}>
           <div style={{
             width:76, height:76, borderRadius:'50%',
             background:'linear-gradient(135deg,#14b8a6 0%,#0891b2 55%,#1d4ed8 100%)',
@@ -82,7 +76,6 @@ function OrbitingSphere() {
 
 function SkillBar({ name, pct, cat, dark }) {
   const ref = useRef(null)
-
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -117,23 +110,23 @@ export default function About({ dark }) {
   const s1 = useReveal()
   const s2 = useReveal()
   const s3 = useReveal()
+  const { t } = useLang()
 
   return (
-    <main className="pt-28 pb-20">
+    <main className="pt-24 pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-24">
 
-        {/* ── Header ─────────────────────────────────────────── */}
+        {/* Header */}
         <div ref={s1} className="reveal">
           <div className="grid md:grid-cols-[1fr_300px] gap-10 items-center">
-            <div className="text-center md:text-left">
-              <p className="text-brand-400 font-mono text-sm mb-3">// about me</p>
+            <div className="text-center md:text-start">
+              <p className="text-brand-400 font-mono text-sm mb-3">{t.about.label}</p>
               <h1 className={`font-display font-bold text-5xl mb-6 ${dark ? 'text-white' : 'text-zinc-900'}`}>
-                Passionate about<br />
-                <span className="text-gradient">the art of frontend</span>
+                {t.about.titleA}<br />
+                <span className="text-gradient">{t.about.titleB}</span>
               </h1>
               <p className={`text-lg max-w-2xl leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-                I'm a frontend developer who obsesses over details — from pixel-perfect layouts to
-                buttery-smooth animations. I believe great code and great design go hand in hand.
+                {t.about.intro}
               </p>
             </div>
             <div className="hidden md:flex justify-center items-center">
@@ -142,25 +135,17 @@ export default function About({ dark }) {
           </div>
         </div>
 
-        {/* ── Personal info card ─────────────────────────────── */}
+        {/* Personal info card */}
         <div ref={s2} className="reveal grid md:grid-cols-2 gap-8 items-start">
 
           {/* Info */}
           <div className={`rounded-3xl p-8 ${dark ? 'bg-white/3 border border-white/5' : 'bg-white border border-zinc-100 shadow-sm'}`}>
             <h2 className={`font-display font-bold text-2xl mb-6 ${dark ? 'text-white' : 'text-zinc-900'}`}>
-              Personal Details
+              {t.about.detailsTitle}
             </h2>
             <ul className="space-y-5">
-              {[
-                { icon: '👤', label: 'Full Name',  value: 'Navid Nahardani'     },
-                { icon: '💼', label: 'Role',       value: 'Frontend Developer'  },
-                { icon: '📅', label: 'Age',        value: '32 years old'        },
-                { icon: MapPin, label: 'Location', value: 'Tehran, Iran'        },
-                { icon: Phone, label: 'Phone',     value: '+98 912 806 6948'    },
-                { icon: Star,  label: 'Experience',value: '5+ Years'            },
-                { icon: '🎓', label: 'Education',  value: 'Computer Engineering' },
-                { icon: Coffee,label: 'Hobbies',   value: 'Coding, UI Design, Coffee' },
-              ].map(({ icon, label, value }, i) => {
+              {t.about.details.map(({ label, value }, i) => {
+                const icon = detailIcons[i]
                 const Icon = typeof icon === 'string' ? null : icon
                 return (
                   <li key={i} className="flex items-center gap-4">
@@ -169,7 +154,7 @@ export default function About({ dark }) {
                     </div>
                     <div>
                       <p className={`text-xs mb-0.5 ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>{label}</p>
-                      <p className={`text-sm font-medium ${dark ? 'text-zinc-100' : 'text-zinc-800'}`}>{value}</p>
+                      <p className={`text-sm font-medium ${dark ? 'text-zinc-100' : 'text-zinc-800'}`} dir={label === 'تلفن' || label === 'Phone' ? 'ltr' : undefined}>{value}</p>
                     </div>
                   </li>
                 )
@@ -181,70 +166,58 @@ export default function About({ dark }) {
           <div className="space-y-6">
             <div className={`rounded-3xl p-8 ${dark ? 'bg-white/3 border border-white/5' : 'bg-white border border-zinc-100 shadow-sm'}`}>
               <h2 className={`font-display font-bold text-2xl mb-4 ${dark ? 'text-white' : 'text-zinc-900'}`}>
-                My Story
+                {t.about.storyTitle}
               </h2>
               <div className={`space-y-4 text-sm leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-                <p>
-                  It started with a simple "Hello, World!" — and turned into an obsession.
-                  Over the past <strong className="text-brand-400">5 years</strong>, I've been on a relentless
-                  journey to master the craft of building exceptional user interfaces.
-                </p>
-                <p>
-                  My journey took me through the evolution of modern frontend — from jQuery to React,
-                  from plain CSS to Tailwind, from JavaScript to TypeScript. Each step sharpened
-                  my understanding of what makes a truly great web experience.
-                </p>
-                <p>
-                  Today, I specialize in <strong className="text-brand-400">React.js</strong> and <strong className="text-brand-400">Vue.js</strong>,
-                  building everything from complex SPAs to lightning-fast marketing sites.
-                  I'm passionate about performance, accessibility, and the tiny details that
-                  elevate good to <em className="text-brand-400">extraordinary</em>.
-                </p>
+                {t.about.story.map((p, i) => <p key={i}>{p}</p>)}
               </div>
             </div>
 
             {/* Interests */}
             <div className="grid grid-cols-2 gap-3">
-              {interests.map(({ icon: Icon, label, desc }, i) => (
-                <div key={i} className={`rounded-2xl p-4 ${dark ? 'bg-white/3 border border-white/5 hover:border-brand-500/20' : 'bg-white border border-zinc-100 hover:border-brand-200 shadow-sm'} transition-all`}>
-                  <div className="w-8 h-8 rounded-xl bg-brand-500/10 flex items-center justify-center mb-2">
-                    <Icon size={15} className="text-brand-400" />
+              {t.about.interests.map(({ label, desc }, i) => {
+                const Icon = interestIcons[i] ?? Code2
+                return (
+                  <div key={i} className={`rounded-2xl p-4 ${dark ? 'bg-white/3 border border-white/5 hover:border-brand-500/20' : 'bg-white border border-zinc-100 hover:border-brand-200 shadow-sm'} transition-all`}>
+                    <div className="w-8 h-8 rounded-xl bg-brand-500/10 flex items-center justify-center mb-2">
+                      <Icon size={15} className="text-brand-400" />
+                    </div>
+                    <p className={`text-xs font-semibold mb-0.5 ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{label}</p>
+                    <p className={`text-[11px] ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>{desc}</p>
                   </div>
-                  <p className={`text-xs font-semibold mb-0.5 ${dark ? 'text-zinc-200' : 'text-zinc-700'}`}>{label}</p>
-                  <p className={`text-[11px] ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>{desc}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
 
-        {/* ── Skills ───────────────────────────────────────────── */}
+        {/* Skills */}
         <div ref={s3} className="reveal">
           <div className="text-center mb-10">
-            <p className="text-brand-400 font-mono text-sm mb-2">// skills & tools</p>
+            <p className="text-brand-400 font-mono text-sm mb-2">{t.about.skillsLabel}</p>
             <h2 className={`font-display font-bold text-4xl ${dark ? 'text-white' : 'text-zinc-900'}`}>
-              My Toolkit
+              {t.about.skillsTitle}
             </h2>
           </div>
 
           <div className={`rounded-3xl p-8 ${dark ? 'bg-white/3 border border-white/5' : 'bg-white border border-zinc-100 shadow-sm'}`}>
             <div className="grid sm:grid-cols-2 gap-x-10 gap-y-5">
               {skills.map((s) => (
-                <SkillBar key={s.name} {...s} dark={dark} />
+                <SkillBar key={s.name} name={s.name} pct={s.pct} cat={t.about.skillCats[s.cat] || s.cat} dark={dark} />
               ))}
             </div>
           </div>
 
           {/* Tools chips */}
           <div className="mt-8">
-            <p className={`text-sm font-medium mb-4 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>Also comfortable with:</p>
+            <p className={`text-sm font-medium mb-4 ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.about.alsoComfortable}</p>
             <div className="flex flex-wrap gap-2">
-              {tools.map((t, i) => (
+              {tools.map((tool, i) => (
                 <span key={i} className={`px-4 py-2 rounded-full text-sm font-mono
                                           ${dark ? 'bg-white/5 text-zinc-400 hover:bg-white/8 hover:text-zinc-200'
                                                  : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700'}
                                           transition-all cursor-default`}>
-                  {t}
+                  {tool}
                 </span>
               ))}
             </div>

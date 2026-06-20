@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Home } from 'lucide-react'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 export default function NotFound({ dark }) {
+  const { t } = useLang()
   return (
     <main className="pt-24 min-h-screen flex items-center justify-center">
       <style>{`
@@ -25,12 +27,12 @@ export default function NotFound({ dark }) {
         >404</div>
 
         {/* Message */}
-        <p className="text-brand-400 font-mono text-sm mb-3">// page_not_found</p>
+        <p className="text-brand-400 font-mono text-sm mb-3">{t.notFound.label}</p>
         <h1 className={`font-display font-bold text-3xl mb-4 ${dark ? 'text-white' : 'text-zinc-900'}`}>
-          صفحه پیدا نشد
+          {t.notFound.title}
         </h1>
         <p className={`text-base max-w-sm mx-auto mb-10 leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-          صفحه‌ای که دنبالش می‌گردی وجود نداره یا منتقل شده.
+          {t.notFound.text}
         </p>
 
         {/* Actions */}
@@ -41,7 +43,7 @@ export default function NotFound({ dark }) {
                        font-medium shadow-lg shadow-brand-500/30 hover:bg-brand-400
                        hover:shadow-brand-500/50 hover:scale-105 transition-all"
           >
-            <Home size={16} /> صفحه اصلی
+            <Home size={16} /> {t.notFound.home}
           </Link>
           <button
             onClick={() => window.history.back()}
@@ -50,7 +52,7 @@ export default function NotFound({ dark }) {
                         ${dark ? 'border-white/10 bg-white/5 text-white hover:bg-white/10'
                                : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 shadow-sm'}`}
           >
-            <ArrowLeft size={16} /> برگشت
+            <ArrowLeft size={16} className="rtl:rotate-180" /> {t.notFound.back}
           </button>
         </div>
       </div>

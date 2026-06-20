@@ -1,15 +1,16 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Github, Linkedin, Twitter, Mail, ArrowUp, Code2, Heart } from 'lucide-react'
+import { Github, Linkedin, Mail, ArrowUp, Code2, Heart } from 'lucide-react'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 const socials = [
-  { icon: Github,   href: 'https://github.com',   label: 'GitHub'   },
-  { icon: Linkedin, href: 'https://linkedin.com',  label: 'LinkedIn' },
-  { icon: Twitter,  href: 'https://twitter.com',   label: 'Twitter'  },
-  { icon: Mail,     href: 'mailto:navid@example.com', label: 'Email' },
+  { icon: Github,   href: 'https://github.com/navid-nhd',                  label: 'GitHub'   },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/navid-nahardani/',  label: 'LinkedIn' },
+  { icon: Mail,     href: 'mailto:nahardaninavid1993@gmail.com',            label: 'Email' },
 ]
 
 export default function Footer({ dark }) {
+  const { t } = useLang()
   return (
     <footer className={`border-t ${dark ? 'border-white/5 bg-[#060a0e]' : 'border-zinc-200/60 bg-white/60'} backdrop-blur-sm`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
@@ -24,24 +25,21 @@ export default function Footer({ dark }) {
               <p className={`font-display font-bold text-sm ${dark ? 'text-white' : 'text-zinc-900'}`}>
                 Navid Nahardani
               </p>
-              <p className={`text-xs ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>Frontend Developer</p>
+              <p className={`text-xs ${dark ? 'text-zinc-500' : 'text-zinc-400'}`}>{t.footer.role}</p>
             </div>
           </div>
 
           {/* Links */}
           <nav className="flex items-center gap-6 text-sm">
-            {['/', '/about', '/projects', '/career', '/contact'].map((path, i) => {
-              const labels = ['Home','About','Projects','Career','Contact']
-              return (
-                <NavLink
-                  key={path}
-                  to={path}
-                  className={`${dark ? 'text-zinc-500 hover:text-brand-400' : 'text-zinc-400 hover:text-brand-500'} transition-colors`}
-                >
-                  {labels[i]}
-                </NavLink>
-              )
-            })}
+            {['/', '/about', '/projects', '/career', '/contact'].map((path, i) => (
+              <NavLink
+                key={path}
+                to={path}
+                className={`${dark ? 'text-zinc-500 hover:text-brand-400' : 'text-zinc-400 hover:text-brand-500'} transition-colors`}
+              >
+                {t.footer.links[i]}
+              </NavLink>
+            ))}
           </nav>
 
           {/* Socials */}
@@ -66,9 +64,9 @@ export default function Footer({ dark }) {
         <div className={`mt-8 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-2
                          text-xs ${dark ? 'border-white/5 text-zinc-600' : 'border-zinc-100 text-zinc-400'}`}>
           <p className="flex items-center gap-1">
-            Built with <Heart size={11} className="text-red-400 fill-red-400" /> by Navid Nahardani © {new Date().getFullYear()}
+            {t.footer.builtWith} <Heart size={11} className="text-red-400 fill-red-400" /> {t.footer.by} © {new Date().getFullYear()}
           </p>
-          <p>React · Vite · Tailwind CSS</p>
+          <p>{t.footer.stack}</p>
         </div>
       </div>
 
@@ -78,7 +76,7 @@ export default function Footer({ dark }) {
         className="fixed bottom-6 right-6 w-10 h-10 rounded-full bg-brand-500 text-white
                    flex items-center justify-center shadow-lg shadow-brand-500/30
                    hover:bg-brand-400 hover:scale-110 transition-all z-40"
-        aria-label="Back to top"
+        aria-label={t.footer.backToTop}
       >
         <ArrowUp size={18} />
       </button>

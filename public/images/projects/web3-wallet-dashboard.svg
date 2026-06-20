@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="Segoe UI, Roboto, sans-serif">
+  <defs>
+    <radialGradient id="wgGlow" cx="80%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="wgGlow2" cx="0%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#4338ca" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#4338ca" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="760" fill="#0a0b10"/>
+  <rect width="1200" height="760" fill="url(#wgGlow)"/>
+  <rect width="1200" height="760" fill="url(#wgGlow2)"/>
+
+  <!-- header -->
+  <text x="70" y="92" fill="#ffffff" font-size="42" font-weight="700">Web3 Wallet Dashboard</text>
+  <text x="70" y="128" fill="#8b8fa3" font-size="22">Next.js 14 · wagmi · viem · RainbowKit</text>
+
+  <!-- connect pill -->
+  <rect x="900" y="58" width="230" height="56" rx="14" fill="#7c3aed"/>
+  <circle cx="936" cy="86" r="9" fill="#ffffff" opacity="0.9"/>
+  <text x="958" y="93" fill="#ffffff" font-size="22" font-weight="600">0x71C7…976F</text>
+
+  <!-- balance card -->
+  <rect x="70" y="190" width="510" height="470" rx="22" fill="#13151d" stroke="#23262f" stroke-width="1.5"/>
+  <text x="106" y="248" fill="#6b7080" font-size="19" letter-spacing="2" font-weight="600">BALANCE</text>
+  <text x="106" y="330" fill="#ffffff" font-size="64" font-weight="700">1.2840</text>
+  <text x="350" y="330" fill="#8b8fa3" font-size="30" font-weight="600">ETH</text>
+  <text x="106" y="372" fill="#7c3aed" font-size="26" font-weight="600">≈ $4,210.00</text>
+
+  <line x1="106" y1="430" x2="544" y2="430" stroke="#23262f" stroke-width="1.5"/>
+  <text x="106" y="494" fill="#6b7080" font-size="22">Address</text>
+  <text x="544" y="494" fill="#cfd2dc" font-size="22" font-weight="600" text-anchor="end">0x71C7…976F</text>
+  <text x="106" y="556" fill="#6b7080" font-size="22">Network</text>
+  <text x="544" y="556" fill="#cfd2dc" font-size="22" font-weight="600" text-anchor="end">Sepolia</text>
+
+  <!-- send card -->
+  <rect x="620" y="190" width="510" height="470" rx="22" fill="#13151d" stroke="#23262f" stroke-width="1.5"/>
+  <text x="656" y="248" fill="#6b7080" font-size="19" letter-spacing="2" font-weight="600">SEND ETH</text>
+
+  <rect x="656" y="278" width="438" height="64" rx="12" fill="#0a0b10" stroke="#23262f" stroke-width="1.5"/>
+  <text x="678" y="318" fill="#6b7080" font-size="22">Recipient address (0x…)</text>
+
+  <rect x="656" y="360" width="438" height="64" rx="12" fill="#0a0b10" stroke="#23262f" stroke-width="1.5"/>
+  <text x="678" y="400" fill="#6b7080" font-size="22">Amount (ETH)</text>
+
+  <rect x="656" y="468" width="438" height="68" rx="14" fill="#7c3aed"/>
+  <text x="875" y="511" fill="#ffffff" font-size="26" font-weight="700" text-anchor="middle">Send</text>
+
+  <text x="656" y="600" fill="#3f4250" font-size="18">✓ tx lifecycle · explorer link · friendly errors</text>
+</svg>

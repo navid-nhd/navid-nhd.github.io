@@ -201,3 +201,51 @@
   from { width: 0%; }
   to   { width: 100%; }
 }
+
+/* ── Persian font (YekanBakh) ───────────────────────── */
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('/fonts/yekanbakh/YekanBakh_Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('/fonts/yekanbakh/YekanBakh_SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('/fonts/yekanbakh/YekanBakh_Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('/fonts/yekanbakh/YekanBakh_ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+}
+
+/* ── RTL (Persian) overrides ────────────────────────── */
+[dir="rtl"] body,
+[dir="rtl"] .font-body,
+[dir="rtl"] .font-display,
+[dir="rtl"] .font-mono {
+  font-family: 'YekanBakh', 'Tahoma', sans-serif;
+}
+
+/* timeline runs down the right side in RTL */
+[dir="rtl"] .timeline-line {
+  left: auto;
+  right: 20px;
+}
+
+/* mobile drawer slides in from the left in RTL */
+[dir="rtl"] .mobile-nav {
+  transform: translateX(-100%);
+}
+[dir="rtl"] .mobile-nav.open {
+  transform: translateX(0);
+}
